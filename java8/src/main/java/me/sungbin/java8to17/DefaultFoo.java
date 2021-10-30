@@ -9,13 +9,14 @@ public class DefaultFoo implements GreetingInterface, Bar {
     }
 
     @Override
-    public void printNameUpperCase() {
-        System.out.println(this.name.toUpperCase());
-    }
-
-    @Override
     public void printName() {
         System.out.println(this.name);
+    }
+
+    // 직접 오버라이드를 해야한다.
+    @Override
+    public void printNameUpperCase() {
+        GreetingInterface.super.printNameUpperCase();
     }
 
     @Override

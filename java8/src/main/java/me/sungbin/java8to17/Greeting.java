@@ -15,6 +15,10 @@ public class Greeting {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String hello(String name) {
         return "hello " + name;
     }

@@ -4,75 +4,72 @@ import java.util.function.*;
 
 public class Foo {
     public static void main(String[] args) {
-//        // 익명 내부 클래스
-//        int baseNumber = 10;
-//
-//        RunSomething runSomething = num -> num + baseNumber; // 순수하지 못한 함수형 프로그래밍
 
-//        Plus10 plus10 = new Plus10();
-//        System.out.println(plus10.apply(1));
+        /**
+         * 순수함수프로그래밍을 할려면 외부에 있는 값을 변경하거나 참조하면 안된다. 함수 내부 및 파라미터만 가지고 써야한다.
+         */
+//        int baseNumber = 10;
+//        RunSomething runSomething = number -> number + baseNumber;
+//        System.out.println(runSomething.doIt(2));
 //
-//        UnaryOperator<Integer> plus = (number) -> number + 10;
-//        System.out.println(plus.apply(1));
-//
-//        Function<Integer, Integer> multiply2 = (number) -> number * 2;
-//        System.out.println(multiply2.apply(1));
-//
-//        System.out.println(plus10.compose(multiply2).apply(3));
-//        System.out.println(plus10.andThen(multiply2).apply(2));
+//        UnaryOperator<Integer> plus10 = (i) -> i + 10;
+//        UnaryOperator<Integer> multiply2 = (i) -> i * 2;
+//        Function<Integer, Integer> multiply2AndPlus10 = plus10.compose(multiply2);
 //
 //        Consumer<Integer> printT = System.out::println;
-//        printT.accept(10);
-//
 //        Supplier<Integer> get10 = () -> 10;
-//        System.out.println(get10.get());
 //
 //        Predicate<String> startsWithSungbin = (str) -> str.startsWith("sungbin");
-//        Predicate<Integer> isEven = (i) -> i%2 == 0;
-
-        Foo foo = new Foo();
-        foo.run();
-
-        Supplier<Integer> get10 = () -> 10;
-
-        BinaryOperator<Integer> sum = Integer::sum;
+//
+//        System.out.println(plus10.apply(1));
+//        System.out.println(multiply2.apply(1));
+//        System.out.println(multiply2AndPlus10.apply(2));
+//        System.out.println(plus10.andThen(multiply2).apply(2));
+//        printT.accept(10);
+//        System.out.println(get10.get());
+//        System.out.println(startsWithSungbin.test("sungbin"));
 
         UnaryOperator<Integer> plus10 = (i) -> i + 10;
         UnaryOperator<Integer> multiply2 = (i) -> i * 2;
-
         System.out.println(plus10.andThen(multiply2).apply(2));
 
+        Supplier<Integer> get10 = () -> 10;
+        BinaryOperator<Integer> sum = Integer::sum;
 
+        Foo foo = new Foo();
+        foo.run();
     }
 
     private void run() {
 
-        // final 생략 가능 :: 사실상 final인 경우
-
         int baseNumber = 10;
 
-        // 로컬 클래스 :: 쉐도잉 기능
+        // 내부 클래스 :: 쉐도잉 가능
         class LocalClass {
             void printBaseNumber() {
                 int baseNumber = 11;
-
                 System.out.println(baseNumber);
             }
         }
 
         // 익명 클래스 :: 쉐도잉 가능
-        Consumer<Integer> integerConsumer = new Consumer<>() {
+        Consumer<Integer> integerConsumer = new Consumer<Integer>() {
             @Override
             public void accept(Integer baseNumber) {
                 System.out.println(baseNumber);
             }
         };
 
-        // 람다 :: 쉥도잉 불가능 :: 람다를 감싸는 놈과 같은 스콥이다.
+        // 람다
         IntConsumer printInt = (i) -> {
             System.out.println(i + baseNumber);
         };
 
         printInt.accept(10);
+
+        LocalClass localClass = new LocalClass();
+        localClass.printBaseNumber();
+
+        integerConsumer.accept(11);
     }
 }
