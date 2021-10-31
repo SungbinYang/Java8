@@ -1,5 +1,10 @@
 package me.sungbin.java8to17;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 public class App {
     public static void main(String[] args) {
 
@@ -227,34 +232,50 @@ public class App {
 //
 //        System.out.println("Hello: " + Thread.currentThread().getName());
 
-        Thread thread = new Thread(() -> {
-//            try {
-//                Thread.sleep(1000L);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            while (true) {
-                System.out.println("Thread: " + Thread.currentThread().getName());
-                try {
-                    Thread.sleep(3000L);
-                } catch (InterruptedException e) {
-//                    System.out.println("exit!");
-//                    return;
-                    throw new IllegalStateException(e);
-                }
-//            }
-        });
-        thread.start();
+//        Thread thread = new Thread(() -> {
+////            try {
+////                Thread.sleep(1000L);
+////            } catch (InterruptedException e) {
+////                e.printStackTrace();
+////            }
+////            while (true) {
+//                System.out.println("Thread: " + Thread.currentThread().getName());
+//                try {
+//                    Thread.sleep(3000L);
+//                } catch (InterruptedException e) {
+////                    System.out.println("exit!");
+////                    return;
+//                    throw new IllegalStateException(e);
+//                }
+////            }
+//        });
+//        thread.start();
+//
+//        System.out.println("Hello: " + Thread.currentThread().getName());
+////        Thread.sleep(3000L);
+//        try {
+//            thread.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+////        thread.interrupt();
+//        System.out.println(thread + " is finished");
+//        ExecutorService executorService = Executors.newSingleThreadExecutor();
+//        ExecutorService executorService = Executors.newFixedThreadPool(2);
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleAtFixedRate(getRunnable("Hello"), 1, 2, TimeUnit.SECONDS);
+//        executorService.submit(getRunnable("Work"));
+//        executorService.submit(getRunnable("The"));
+//        executorService.submit(getRunnable("Java"));
+//        executorService.submit(getRunnable("Thread"));
 
-        System.out.println("Hello: " + Thread.currentThread().getName());
-//        Thread.sleep(3000L);
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-//        thread.interrupt();
-        System.out.println(thread + " is finished");
+//        executorService.shutdown();
+    }
+
+    private static Runnable getRunnable(String message) {
+        return () -> {
+            System.out.println(message + Thread.currentThread().getName());
+        };
     }
 
 //    private static OnlineClass createNewClasses() {
