@@ -1,12 +1,11 @@
 package me.sungbin.java8to17;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.function.Function;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
 
 //        Greeting greeting = new Greeting();
 //
@@ -85,12 +84,12 @@ public class App {
 //        }).collect(Collectors.toList());
 //        collect.forEach(System.out::println);
 
-        List<OnlineClass> springClasses = new ArrayList<>();
-        springClasses.add(new OnlineClass(1, "spring boot", true));
+//        List<OnlineClass> springClasses = new ArrayList<>();
+//        springClasses.add(new OnlineClass(1, "spring boot", true));
 //        springClasses.add(new OnlineClass(2, "spring data jpq", true));
 //        springClasses.add(new OnlineClass(3, "spring mvc", false));
 //        springClasses.add(new OnlineClass(4, "spring core", false));
-        springClasses.add(new OnlineClass(5, "rest api development", false));
+//        springClasses.add(new OnlineClass(5, "rest api development", false));
 //
 //        List<OnlineClass> javaClasses = new ArrayList<>();
 //        javaClasses.add(new OnlineClass(6, "The Java, Test", true));
@@ -132,10 +131,10 @@ public class App {
 //        OnlineClass spring_boot = new OnlineClass(1, "spring boot", true);
 //        spring_boot.setProgress(null);
 
-        Optional<OnlineClass> spring = springClasses.stream().filter(s -> s.getTitle().startsWith("spring")).findFirst();
-        System.out.println(spring.isPresent());
-
-        spring.ifPresent(s -> System.out.println(s.getTitle()));
+//        Optional<OnlineClass> spring = springClasses.stream().filter(s -> s.getTitle().startsWith("spring")).findFirst();
+//        System.out.println(spring.isPresent());
+//
+//        spring.ifPresent(s -> System.out.println(s.getTitle()));
 
 //        OnlineClass onlineClass = spring.orElseGet(App::createNewClasses);
 //        OnlineClass onlineClass = spring.orElseThrow(IllegalArgumentException::new);
@@ -146,14 +145,37 @@ public class App {
 //        Optional<Integer> integer = spring.map(OnlineClass::getId);
 //        System.out.println(integer.isPresent());
 
-        Optional<Progress> progress = spring.flatMap(OnlineClass::getProgress);
+//        Optional<Progress> progress = spring.flatMap(OnlineClass::getProgress);
+//
+//        Optional<Optional<Progress>> progress1 = spring.map(OnlineClass::getProgress);
+//        Optional<Progress> progress2 = progress1.orElse(Optional.empty());
 
-        Optional<Optional<Progress>> progress1 = spring.map(OnlineClass::getProgress);
-        Optional<Progress> progress2 = progress1.orElse(Optional.empty());
+        // 멀티스레드 환경에서 안전하게 사용하기가 쉽지 않다.
+//        Date date = new Date();
+//        long time = date.getTime();
+//        System.out.println(date);
+//        System.out.println(time);
+//
+//        Thread.sleep(1000 * 3);
+//        Date after3Seconds = new Date();
+//        System.out.println(after3Seconds);
+//        after3Seconds.setTime(time);
+//        System.out.println(after3Seconds);
+
+//        Calendar sungbinBirthday = new GregorianCalendar(1996, Calendar.MAY, 22);
+//        System.out.println(sungbinBirthday.getTime());
+//        sungbinBirthday.add(Calendar.DAY_OF_YEAR, 1);
+//        System.out.println(sungbinBirthday.getTime());
+
+        Date date = new Date();
+        long time = date.getTime();
+        System.out.println(time); // 기계용 시간
+
+        
     }
 
-    private static OnlineClass createNewClasses() {
-        System.out.println("creating new online class");
-        return new OnlineClass(10, "New class", false);
-    }
+//    private static OnlineClass createNewClasses() {
+//        System.out.println("creating new online class");
+//        return new OnlineClass(10, "New class", false);
+//    }
 }
