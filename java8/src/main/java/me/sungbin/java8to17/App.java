@@ -3,6 +3,7 @@ package me.sungbin.java8to17;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 public class App {
     public static void main(String[] args) {
@@ -86,9 +87,9 @@ public class App {
 
         List<OnlineClass> springClasses = new ArrayList<>();
         springClasses.add(new OnlineClass(1, "spring boot", true));
-        springClasses.add(new OnlineClass(2, "spring data jpq", true));
-        springClasses.add(new OnlineClass(3, "spring mvc", false));
-        springClasses.add(new OnlineClass(4, "spring core", false));
+//        springClasses.add(new OnlineClass(2, "spring data jpq", true));
+//        springClasses.add(new OnlineClass(3, "spring mvc", false));
+//        springClasses.add(new OnlineClass(4, "spring core", false));
         springClasses.add(new OnlineClass(5, "rest api development", false));
 //
 //        List<OnlineClass> javaClasses = new ArrayList<>();
@@ -128,7 +129,31 @@ public class App {
 //        spring1.forEach(System.out::println);
 
         // 프리미티브 타입은 Optional이 따로 있다. Optional을 사용하면 boxing, unboxing이 일어날 위험이 있기에 성능적 문제를 야기할수 있다.
-        OnlineClass spring_boot = new OnlineClass(1, "spring boot", true);
-        spring_boot.setProgress(null);
+//        OnlineClass spring_boot = new OnlineClass(1, "spring boot", true);
+//        spring_boot.setProgress(null);
+
+        Optional<OnlineClass> spring = springClasses.stream().filter(s -> s.getTitle().startsWith("spring")).findFirst();
+        System.out.println(spring.isPresent());
+
+        spring.ifPresent(s -> System.out.println(s.getTitle()));
+
+//        OnlineClass onlineClass = spring.orElseGet(App::createNewClasses);
+//        OnlineClass onlineClass = spring.orElseThrow(IllegalArgumentException::new);
+//        Optional<OnlineClass> onlineClass = spring.filter(OnlineClass::isClosed);
+//        System.out.println(onlineClass.isPresent());
+//        System.out.println(onlineClass.getTitle());
+
+//        Optional<Integer> integer = spring.map(OnlineClass::getId);
+//        System.out.println(integer.isPresent());
+
+        Optional<Progress> progress = spring.flatMap(OnlineClass::getProgress);
+
+        Optional<Optional<Progress>> progress1 = spring.map(OnlineClass::getProgress);
+        Optional<Progress> progress2 = progress1.orElse(Optional.empty());
+    }
+
+    private static OnlineClass createNewClasses() {
+        System.out.println("creating new online class");
+        return new OnlineClass(10, "New class", false);
     }
 }

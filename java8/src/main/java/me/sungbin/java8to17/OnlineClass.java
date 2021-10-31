@@ -45,7 +45,7 @@ public class OnlineClass {
     // 로직을 처리할때 예외처리를 쓰는것은 좋은 코드가 아니다.
     // Optional은 리턴 타입에만 쓰는것이 권장사항이다.
     public Optional<Progress> getProgress() {
-        return Optional.ofNullable(progress);
+        return Optional.empty();
     }
 
     public void setProgress(Progress progress) {
