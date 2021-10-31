@@ -1,14 +1,7 @@
 package me.sungbin.java8to17;
 
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
-
 public class App {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
 
 //        Greeting greeting = new Greeting();
 //
@@ -207,32 +200,73 @@ public class App {
 //        Duration duration = Duration.between(now, plus);
 //        System.out.println(duration.getSeconds());
 
-        Date date = new Date();
-        Instant instant = date.toInstant();
+//        Date date = new Date();
+//        Instant instant = date.toInstant();
+//
+//        Date newDate = Date.from(instant);
+//
+//        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+//        LocalDateTime dateTime = gregorianCalendar.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+//        ZonedDateTime zonedDateTime = gregorianCalendar.toInstant().atZone(ZoneId.systemDefault());
+//        GregorianCalendar from = GregorianCalendar.from(zonedDateTime);
+//
+//        ZoneId zoneId = TimeZone.getTimeZone("PST").toZoneId();
+//        TimeZone timeZone = TimeZone.getTimeZone(zoneId);
+//
+//        LocalDateTime now = LocalDateTime.now();
+//        LocalDateTime plus = now.plus(10, ChronoUnit.DAYS);
+//
+//
+//        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyy");
+//        System.out.println(now.format(dateTimeFormatter));
+//
+//        LocalDate parse = LocalDate.parse("05/22/1996", dateTimeFormatter);
+//        System.out.println(parse);
+//        MyThread myThread = new MyThread();
+//        myThread.start();
+//
+//        System.out.println("Hello: " + Thread.currentThread().getName());
 
-        Date newDate = Date.from(instant);
+        Thread thread = new Thread(() -> {
+//            try {
+//                Thread.sleep(1000L);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            while (true) {
+                System.out.println("Thread: " + Thread.currentThread().getName());
+                try {
+                    Thread.sleep(3000L);
+                } catch (InterruptedException e) {
+//                    System.out.println("exit!");
+//                    return;
+                    throw new IllegalStateException(e);
+                }
+//            }
+        });
+        thread.start();
 
-        GregorianCalendar gregorianCalendar = new GregorianCalendar();
-        LocalDateTime dateTime = gregorianCalendar.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-        ZonedDateTime zonedDateTime = gregorianCalendar.toInstant().atZone(ZoneId.systemDefault());
-        GregorianCalendar from = GregorianCalendar.from(zonedDateTime);
-
-        ZoneId zoneId = TimeZone.getTimeZone("PST").toZoneId();
-        TimeZone timeZone = TimeZone.getTimeZone(zoneId);
-
-        LocalDateTime now = LocalDateTime.now();
-        LocalDateTime plus = now.plus(10, ChronoUnit.DAYS);
-        
-
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyy");
-        System.out.println(now.format(dateTimeFormatter));
-
-        LocalDate parse = LocalDate.parse("05/22/1996", dateTimeFormatter);
-        System.out.println(parse);
+        System.out.println("Hello: " + Thread.currentThread().getName());
+//        Thread.sleep(3000L);
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+//        thread.interrupt();
+        System.out.println(thread + " is finished");
     }
 
 //    private static OnlineClass createNewClasses() {
 //        System.out.println("creating new online class");
 //        return new OnlineClass(10, "New class", false);
+//    }
+
+//    static class MyThread extends Thread {
+//
+//        @Override
+//        public void run() {
+//            System.out.println("Thread: " + Thread.currentThread().getName());
+//        }
 //    }
 }
