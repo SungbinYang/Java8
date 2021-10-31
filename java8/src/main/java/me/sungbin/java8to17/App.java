@@ -1,8 +1,11 @@
 package me.sungbin.java8to17;
 
-import java.util.Calendar;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 public class App {
     public static void main(String[] args) throws InterruptedException {
@@ -167,11 +170,65 @@ public class App {
 //        sungbinBirthday.add(Calendar.DAY_OF_YEAR, 1);
 //        System.out.println(sungbinBirthday.getTime());
 
-        Date date = new Date();
-        long time = date.getTime();
-        System.out.println(time); // 기계용 시간
+//        Date date = new Date();
+//        long time = date.getTime();
+//        System.out.println(time); // 기계용 시간
 
+//        Instant instant = Instant.now();
+//        System.out.println(instant); // 기준 UTC, GMT
+//        System.out.println(instant.atZone(ZoneId.of("UTC")));
+
+//        ZoneId zone = ZoneId.systemDefault();
+//        System.out.println(zone);
+//        ZonedDateTime zonedDateTime = instant.atZone(zone);
+//        System.out.println(zonedDateTime);
+
+//        LocalDateTime now = LocalDateTime.now();
+//        System.out.println(now);
+//        LocalDateTime birthday = LocalDateTime.of(1996, Month.MAY, 15, 0, 0, 0);
+//        ZonedDateTime nowInKorea = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+//        System.out.println(nowInKorea);
+//
+//        Instant nowInstant = Instant.now();
+//        ZonedDateTime zonedDateTime = nowInstant.atZone(ZoneId.of("Asia/Seoul"));
+//        System.out.println(zonedDateTime);
+
+//        LocalDate today = LocalDate.now();
+//        LocalDate christmas = LocalDate.of(2021, Month.DECEMBER, 25);
+//
+//        Period period = Period.between(today, christmas);
+//        System.out.println(period.getDays());
+//
+//        Period until = today.until(christmas);
+//        System.out.println(until.get(ChronoUnit.DAYS));
+
+//        Instant now = Instant.now();
+//        Instant plus = now.plus(10, ChronoUnit.SECONDS);
+//        Duration duration = Duration.between(now, plus);
+//        System.out.println(duration.getSeconds());
+
+        Date date = new Date();
+        Instant instant = date.toInstant();
+
+        Date newDate = Date.from(instant);
+
+        GregorianCalendar gregorianCalendar = new GregorianCalendar();
+        LocalDateTime dateTime = gregorianCalendar.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        ZonedDateTime zonedDateTime = gregorianCalendar.toInstant().atZone(ZoneId.systemDefault());
+        GregorianCalendar from = GregorianCalendar.from(zonedDateTime);
+
+        ZoneId zoneId = TimeZone.getTimeZone("PST").toZoneId();
+        TimeZone timeZone = TimeZone.getTimeZone(zoneId);
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime plus = now.plus(10, ChronoUnit.DAYS);
         
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyy");
+        System.out.println(now.format(dateTimeFormatter));
+
+        LocalDate parse = LocalDate.parse("05/22/1996", dateTimeFormatter);
+        System.out.println(parse);
     }
 
 //    private static OnlineClass createNewClasses() {
