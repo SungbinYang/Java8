@@ -1,12 +1,11 @@
 package me.sungbin.java8to17;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.*;
 
 public class App {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
 
 //        Greeting greeting = new Greeting();
 //
@@ -262,21 +261,56 @@ public class App {
 //        System.out.println(thread + " is finished");
 //        ExecutorService executorService = Executors.newSingleThreadExecutor();
 //        ExecutorService executorService = Executors.newFixedThreadPool(2);
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(getRunnable("Hello"), 1, 2, TimeUnit.SECONDS);
+//        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+//        executorService.scheduleAtFixedRate(getRunnable("Hello"), 1, 2, TimeUnit.SECONDS);
 //        executorService.submit(getRunnable("Work"));
 //        executorService.submit(getRunnable("The"));
 //        executorService.submit(getRunnable("Java"));
 //        executorService.submit(getRunnable("Thread"));
 
-//        executorService.shutdown();
+//        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
+
+        Callable<String> hello = () -> {
+            Thread.sleep(2000L);
+            return "Hello";
+        };
+
+        Callable<String> java = () -> {
+            Thread.sleep(3000L);
+            return "Java";
+        };
+
+        Callable<String> sungbin = () -> {
+            Thread.sleep(1000L);
+            return "Sungbin";
+        };
+
+//        List<Future<String>> futures = executorService.invokeAll(Arrays.asList(hello, java, sungbin));
+        String s = executorService.invokeAny(Arrays.asList(hello, java, sungbin));
+//        for (Future<String> f : futures) {
+//            System.out.println(f.get());
+//        }
+
+        System.out.println(s);
+
+//        Future<String> submit = executorService.submit(hello);
+//        System.out.println(submit.isDone());
+//        System.out.println("Started!");
+////        submit.get(); // 블록킹
+//        submit.cancel(false);
+//
+//        System.out.println(submit.isDone());
+//        System.out.println("End!!");
+
+        executorService.shutdown();
     }
 
-    private static Runnable getRunnable(String message) {
-        return () -> {
-            System.out.println(message + Thread.currentThread().getName());
-        };
-    }
+//    private static Runnable getRunnable(String message) {
+//        return () -> {
+//            System.out.println(message + Thread.currentThread().getName());
+//        };
+//    }
 
 //    private static OnlineClass createNewClasses() {
 //        System.out.println("creating new online class");
