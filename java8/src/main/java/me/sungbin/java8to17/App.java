@@ -1,8 +1,9 @@
 package me.sungbin.java8to17;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class App {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
@@ -269,30 +270,30 @@ public class App {
 //        executorService.submit(getRunnable("Thread"));
 
 //        ExecutorService executorService = Executors.newSingleThreadExecutor();
-        ExecutorService executorService = Executors.newFixedThreadPool(4);
-
-        Callable<String> hello = () -> {
-            Thread.sleep(2000L);
-            return "Hello";
-        };
-
-        Callable<String> java = () -> {
-            Thread.sleep(3000L);
-            return "Java";
-        };
-
-        Callable<String> sungbin = () -> {
-            Thread.sleep(1000L);
-            return "Sungbin";
-        };
+//        ExecutorService executorService = Executors.newFixedThreadPool(4);
+//
+//        Callable<String> hello = () -> {
+//            Thread.sleep(2000L);
+//            return "Hello";
+//        };
+//
+//        Callable<String> java = () -> {
+//            Thread.sleep(3000L);
+//            return "Java";
+//        };
+//
+//        Callable<String> sungbin = () -> {
+//            Thread.sleep(1000L);
+//            return "Sungbin";
+//        };
 
 //        List<Future<String>> futures = executorService.invokeAll(Arrays.asList(hello, java, sungbin));
-        String s = executorService.invokeAny(Arrays.asList(hello, java, sungbin));
+//        String s = executorService.invokeAny(Arrays.asList(hello, java, sungbin));
 //        for (Future<String> f : futures) {
 //            System.out.println(f.get());
 //        }
 
-        System.out.println(s);
+//        System.out.println(s);
 
 //        Future<String> submit = executorService.submit(hello);
 //        System.out.println(submit.isDone());
@@ -303,7 +304,57 @@ public class App {
 //        System.out.println(submit.isDone());
 //        System.out.println("End!!");
 
-        executorService.shutdown();
+//        executorService.shutdown();
+//        ExecutorService executorService = Executors.newFixedThreadPool(4);
+//        Future<String> submit = executorService.submit(() -> "hello");
+//
+//        submit.get(); // 블록킹 콜
+
+//        CompletableFuture<String> future = new CompletableFuture<>();
+//        future.complete("sungbin");
+//
+//        System.out.println(future.get());
+
+//        CompletableFuture<String> future = CompletableFuture.completedFuture("sungbin");
+//        System.out.println(future.get());
+
+        // 리턴이 없는 경우
+        CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+            System.out.println("Hello " + Thread.currentThread().getName());
+        });
+        future.get();
+
+        // 리턴이 있는 경우
+        CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> {
+            System.out.println("Hello " + Thread.currentThread().getName());
+            return "Hello";
+        }).thenApply(s -> {
+            System.out.println(Thread.currentThread().getName());
+            return s.toUpperCase();
+        });
+
+        System.out.println(completableFuture.get());
+
+        CompletableFuture<Void> voidCompletableFuture = CompletableFuture.supplyAsync(() -> {
+            System.out.println("Hello " + Thread.currentThread().getName());
+            return "Hello";
+        }).thenAccept(s -> {
+            System.out.println(Thread.currentThread().getName());
+            System.out.println(s.toUpperCase());
+        });
+
+        voidCompletableFuture.get();
+
+        ExecutorService executorService = Executors.newFixedThreadPool(4);
+
+        CompletableFuture<Void> uCompletableFuture = CompletableFuture.supplyAsync(() -> {
+            System.out.println("Hello " + Thread.currentThread().getName());
+            return "Hello";
+        }, executorService).thenRunAsync(() -> {
+            System.out.println(Thread.currentThread().getName());
+        }, executorService);
+
+        uCompletableFuture.get();
     }
 
 //    private static Runnable getRunnable(String message) {
