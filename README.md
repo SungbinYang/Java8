@@ -30,3 +30,6 @@
 - Executors
 - Callable과 Future
 - CompletableFuture
+
+## 08. 기타
+- 애노테이션의 변화
