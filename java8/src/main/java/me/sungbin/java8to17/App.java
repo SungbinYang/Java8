@@ -2,14 +2,11 @@ package me.sungbin.java8to17;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
+@Chicken("양념")
+@Chicken("마늘간장")
 public class App {
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) {
 
 //        Greeting greeting = new Greeting();
 //
@@ -359,7 +356,7 @@ public class App {
 //
 //        uCompletableFuture.get();
 
-        boolean throwError = true;
+//        boolean throwError = true;
 
 //        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
 //            if (throwError) {
@@ -369,21 +366,21 @@ public class App {
 //            return "Hello";
 //        }).exceptionally(ex -> "Error!");
 
-        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
-            if (throwError) {
-                throw new IllegalStateException();
-            }
-            System.out.println("Hello " + Thread.currentThread().getName());
-            return "Hello";
-        }).handle((result, ex) -> {
-            if (ex != null) {
-                System.out.println(ex);
-                return "ERROR";
-            }
-            return result;
-        });
-
-        System.out.println(hello.get());
+//        CompletableFuture<String> hello = CompletableFuture.supplyAsync(() -> {
+//            if (throwError) {
+//                throw new IllegalStateException();
+//            }
+//            System.out.println("Hello " + Thread.currentThread().getName());
+//            return "Hello";
+//        }).handle((result, ex) -> {
+//            if (ex != null) {
+//                System.out.println(ex);
+//                return "ERROR";
+//            }
+//            return result;
+//        });
+//
+//        System.out.println(hello.get());
 
 //        CompletableFuture<String> world = CompletableFuture.supplyAsync(() -> {
 //            System.out.println("World " + Thread.currentThread().getName());
@@ -406,6 +403,20 @@ public class App {
 //
 //        CompletableFuture<String> future = hello.thenCompose(App::getWorld);
 //        System.out.println(future.get());
+
+        List<String> names = Arrays.asList("sungbin");
+
+        Chicken[] chickens = App.class.getAnnotationsByType(Chicken.class);
+        Arrays.stream(chickens).forEach(c -> System.out.println(c.value()));
+
+        ChickenContainer chickenContainer = App.class.getAnnotation(ChickenContainer.class);
+        Arrays.stream(chickenContainer.value()).forEach(c -> System.out.println(c.value()));
+    }
+
+    static class FeelsLikeChicken<T> {
+        public static <C> void print(C c) {
+            System.out.println(c);
+        }
     }
 
 //    private static CompletableFuture<String> getWorld(String message) {
