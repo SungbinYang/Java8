@@ -34,3 +34,4 @@
 ## 08. 기타
 - 애노테이션의 변화
 - 배열 Parallel 정렬
+- Metaspace
